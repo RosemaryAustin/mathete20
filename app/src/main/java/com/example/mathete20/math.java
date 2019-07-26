@@ -304,6 +304,7 @@ public class math extends AppCompatActivity {
 
         Bitmap thresh_bitmap = threshy(blurbitmap, median_third);
 
+        
 
 //        ColorMatrix t_matrix = createThresholdMatrix(median_third);
 //
