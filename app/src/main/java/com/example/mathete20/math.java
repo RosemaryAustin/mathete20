@@ -209,15 +209,15 @@ public class math extends AppCompatActivity {
         return vector;
     }
 
-    public static ColorMatrix createThresholdMatrix(int threshold) {
-        ColorMatrix matrix = new ColorMatrix(new float[] {
-                85.f, 85.f, 85.f, 0.f, -255.f * threshold,
-                85.f, 85.f, 85.f, 0.f, -255.f * threshold,
-                85.f, 85.f, 85.f, 0.f, -255.f * threshold,
-                0f, 0f, 0f, 1f, 0f
-        });
-        return matrix;
-    }
+//    public static ColorMatrix createThresholdMatrix(int threshold) {
+//        ColorMatrix matrix = new ColorMatrix(new float[] {
+//                85.f, 85.f, 85.f, 0.f, -255.f * threshold,
+//                85.f, 85.f, 85.f, 0.f, -255.f * threshold,
+//                85.f, 85.f, 85.f, 0.f, -255.f * threshold,
+//                0f, 0f, 0f, 1f, 0f
+//        });
+//        return matrix;
+//    }
 
     //This resizes the pic for memory and does the image preprocessing
     private void setPic() {
@@ -282,19 +282,16 @@ public class math extends AppCompatActivity {
 
         int median_third = (int) median_double;
 
-        ColorMatrix t_matrix = createThresholdMatrix(median_third);
-
-//LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK LOOK
+//        ColorMatrix t_matrix = createThresholdMatrix(median_third);
+//
 //        Bitmap thresh_bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 //        Canvas c = new Canvas(bmpGrayscale);
-//
 //        Paint paintt = new Paint();
 //        //cm.setSaturation(0);
 //        ColorMatrixColorFilter f2 = new ColorMatrixColorFilter(t_matrix);
 //
 //        paintt.setColorFilter(f2);
 //        c.drawBitmap(bmpOriginal, 0, 0, paint);
-//
 //        return bmpGrayscale;
 
 //        for (int i =0 ;i<blurbitmap.getHeight();i++) {
