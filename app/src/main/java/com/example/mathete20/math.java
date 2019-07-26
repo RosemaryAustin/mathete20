@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -219,6 +220,25 @@ public class math extends AppCompatActivity {
 //        return matrix;
 //    }
 
+    static Bitmap threshy(Bitmap bitmap, int threshold) {
+        for (int y = 0; y < bitmap.getHeight(); y++){
+            for (int x = 0; x < bitmap.getWidth(); x++){
+                int c = bitmap.getPixel(x, y);
+                byte r, g, b;
+                r = (byte)Color.red(c);
+                g = (byte)Color.green(c);
+                b = (byte)Color.blue(c);
+                if (r > threshold){
+                    bitmap.setPixel(x, y, Color.WHITE);
+                }
+                else{
+                    bitmap.setPixel(x, y, Color.BLACK);
+                }
+            }
+        }
+        return bitmap;
+    }
+
     //This resizes the pic for memory and does the image preprocessing
     private void setPic() {
         // Get the dimensions of the View
@@ -282,6 +302,9 @@ public class math extends AppCompatActivity {
 
         int median_third = (int) median_double;
 
+        Bitmap thresh_bitmap = threshy(blurbitmap, median_third);
+
+
 //        ColorMatrix t_matrix = createThresholdMatrix(median_third);
 //
 //        Bitmap thresh_bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
@@ -304,6 +327,6 @@ public class math extends AppCompatActivity {
 //        matrix.setSaturation(0);
 //        imageView.setColorFilter(new ColorMatrixColorFilter(matrix));
 
-        imageView.setImageBitmap(blurbitmap);
+        imageView.setImageBitmap(thresh_bitmap);
     }
 }
