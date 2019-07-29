@@ -2,16 +2,26 @@ package com.example.mathete20;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.opencv.android.OpenCVLoader;
 
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static final String TAG = "here";
     private Button start;
+    static {
+        if (!OpenCVLoader.initDebug()) {
+            // Handle initialization error
+            Log.d("MYINT", "value: " + 1);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

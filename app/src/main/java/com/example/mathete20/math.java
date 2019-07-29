@@ -21,6 +21,13 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 //import android.graphics.Matrix;
 
@@ -239,6 +247,59 @@ public class math extends AppCompatActivity {
         return bitmap;
     }
 
+    public Bitmap Contours(Bitmap bitmap) {
+
+        Mat inputMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC3);
+        Utils.bitmapToMat(bitmap, inputMat);
+
+        //Mat grayMat = new Mat();
+        Mat cannyEdges = new Mat();
+        Mat hierarchy = new Mat();
+
+        List<MatOfPoint> contourList = new ArrayList<MatOfPoint>(); //A list to store all the contours
+
+//        //Converting the image to grayscale
+//        Imgproc.cvtColor(originalMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+
+        Imgproc.Canny(inputMat, cannyEdges, 10, 100);
+
+        //finding contours
+        Imgproc.findContours(cannyEdges, contourList, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        //Drawing contours on a new image
+        Mat contours = new Mat();
+        contours.create(cannyEdges.rows(), cannyEdges.cols(), CvType.CV_8UC3);
+        Random r = new Random();
+        for (int i = 0; i < contourList.size(); i++) {
+            Imgproc.drawContours(contours, contourList, i, new Scalar(r.nextInt(255), r.nextInt(255), r.nextInt(255)), -1);
+        }
+
+
+//        for(contour in contours) {
+//
+//            val approxCurve = MatOfPoint2f()
+//            val contour2f = MatOfPoint2f()
+//            contour.convertTo(contour2f, CvType.CV_32FC2)
+//            val approxDistance = Imgproc.arcLength(contour2f, true) * 0.02
+//            Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true)
+//            val points = MatOfPoint()
+//            approxCurve.convertTo(points, CvType.CV_8UC4)
+//            val rect = Imgproc.boundingRect(points)
+//
+//            Imgproc.rectangle(frame, Point(rect.x.toDouble(), rect.y.toDouble()),
+//                    Point((rect.x + rect.width).toDouble(), (rect.y + rect.height).toDouble()), Scalar(255.0, 0.0, 0.0, 255.0), 3)
+//        }
+
+
+
+
+        //Converting Mat back to Bitmap
+        Utils.matToBitmap(contours, bitmap);
+        //imageView.setImageBitmap(bitmap);
+
+        return bitmap;
+    }
+
     //This resizes the pic for memory and does the image preprocessing
     private void setPic() {
         // Get the dimensions of the View
@@ -261,6 +322,24 @@ public class math extends AppCompatActivity {
         bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
+//        File lizimgFile = new  File('../../assets/test2_copy.jpg');
+//
+//
+//        HERE HERE HERE
+//        if(lizimgFile.exists()){
+//
+//            Bitmap myBitmap = BitmapFactory.decodeFile(lizimgFile.getAbsolutePath());
+//
+//            ImageView myImage = (ImageView) findViewById(R.id.imageviewTest);
+//
+//            myImage.setImageBitmap(myBitmap);
+//
+//        }
+//
+//        HERE HERE HERE
+
+        //Bitmap Nbitmap = BitmapFactory.decodeFile();
 
 //        Bitmap rotatedBitmap = null;
 //        rotatedBitmap = rotateImage(bitmap, 90);
@@ -304,7 +383,7 @@ public class math extends AppCompatActivity {
 
         Bitmap thresh_bitmap = threshy(blurbitmap, median_third);
 
-        
+
 
 //        ColorMatrix t_matrix = createThresholdMatrix(median_third);
 //
@@ -328,6 +407,8 @@ public class math extends AppCompatActivity {
 //        matrix.setSaturation(0);
 //        imageView.setColorFilter(new ColorMatrixColorFilter(matrix));
 
-        imageView.setImageBitmap(thresh_bitmap);
+        Bitmap contours_bitmap = Contours(thresh_bitmap);
+
+        imageView.setImageBitmap(contours_bitmap);
     }
 }
